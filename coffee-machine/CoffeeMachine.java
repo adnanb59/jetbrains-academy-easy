@@ -124,7 +124,8 @@ class CoffeeMachine {
     }
 
     public void operate() {
-        while (true) {
+        boolean exit = false;
+        while (!exit) {
             System.out.print("Write action (buy, fill, take, status): ");
             switch (this.in.next()) {
                 case "buy":
@@ -138,6 +139,10 @@ class CoffeeMachine {
                     break;
                 case "status":
                     System.out.println(this.toString());
+                    break;
+                case "exit":
+                    System.out.println("Closing system down...");
+                    exit = true;
                     break;
                 default:
                     System.out.println("Invalid command, try again.");
