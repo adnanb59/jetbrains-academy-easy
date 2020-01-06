@@ -1,3 +1,5 @@
+package machine;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner; 
@@ -10,11 +12,14 @@ class CoffeeMachine {
     private Scanner in;
 
     public CoffeeMachine() {
-        _init(550.00, 1200, 540, 120, 9);
-
         this.in = new Scanner(System.in);
-        
-        drinks = new ArrayList<Drink>();
+        this.water_ml = 0;
+        this.milk_ml = 0;
+        this.coffeeBeans_g = 0;
+        this.cups = 0;
+        this.money = 0;
+
+        this.drinks = new ArrayList<Drink>();
         drinks.add(DrinkFactory.makeDrink("Espresso"));
         drinks.add(DrinkFactory.makeDrink("Latte"));
         drinks.add(DrinkFactory.makeDrink("Cappuccino"));
@@ -26,14 +31,6 @@ class CoffeeMachine {
                 prompt += ", ";
             }
         }
-    }
-
-    private void _init(double money, int water, int milk, int beans, int cups) {
-        this.money = money;
-        this.water_ml = water;
-        this.milk_ml = milk;
-        this.coffeeBeans_g = beans;
-        this.cups = cups;
     }
 
     private boolean checkStock(Drink curr) {
@@ -78,7 +75,6 @@ class CoffeeMachine {
     }
 
     private void sellDrink() {
-        int selection;
         Drink curr = getDrink("What do you want to buy? ");
         if (checkStock(curr)) {
             updateAmounts(-curr.WATER_ML, -curr.MILK_ML, -curr.COFFEE_BEANS_G, -1);
@@ -126,29 +122,43 @@ class CoffeeMachine {
     public void operate() {
         boolean exit = false;
         while (!exit) {
-            System.out.print("Write action (buy, fill, take, status): ");
-            switch (this.in.next()) {
+            System.out.print("Write action (buy, fill, take, status, amounts, available, exit): ");
+            switch (this.in.nextLine()) {
                 case "buy":
+                    System.out.println();
                     sellDrink();
                     break;
                 case "fill":
+                    System.out.println();
                     fillCoffeeMachine();
                     break;
                 case "take":
+                    System.out.println();
                     takeMoneyFromMachine();
                     break;
                 case "status":
+                    System.out.println();
                     System.out.println(this.toString());
                     break;
+                case "amounts":
+                    System.out.println();
+                    displayAmountsForCups();
+                    break;
+                case "available":
+                    System.out.println();
+                    displayAvailableCupsPerSupply();
+                    break;
                 case "exit":
+                    System.out.println();
                     System.out.println("Closing system down...");
                     exit = true;
                     break;
                 default:
+                    System.out.println();
                     System.out.println("Invalid command, try again.");
                     break;                
             }
-            this.in.nextLine();
+            System.out.println();
         }
     }
 

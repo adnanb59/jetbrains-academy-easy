@@ -1,3 +1,5 @@
+package machine;
+
 class Drink {
     final double COST;
     final int WATER_ML, MILK_ML, COFFEE_BEANS_G;
