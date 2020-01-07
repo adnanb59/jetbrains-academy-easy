@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner; 
 
-class CoffeeMachine {
+public class CoffeeMachine {
     private double money;
     private int water_ml, milk_ml, coffeeBeans_g, cups;
     private List<Drink> drinks;
