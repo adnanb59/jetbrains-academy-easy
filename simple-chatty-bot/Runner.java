@@ -1,5 +1,4 @@
-import tictactoe.*;
-import java.util.*;
+import bot.*;
 
 public class Runner {
     public static void main (String[] args) {

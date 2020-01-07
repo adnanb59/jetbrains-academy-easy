@@ -1,4 +1,4 @@
-package tictactoe;
+package bot;
 
 import java.util.Scanner;
 
