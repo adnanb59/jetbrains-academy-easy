@@ -23,4 +23,9 @@ The resulting data can either be displayed in the standard output (right on the 
 written into a file. The output file is specified with the **-out** flag & if no flag is given then the result 
 will be outputted on the screen.
 
+#### *Running Program*
+
+After compiling files, run program with:  
+`java Runner [-mode enc|dec] [-key <integer>] [-data <String>] [-in <filename>] [-out <filename>]`
+
 ##### URL: https://hyperskill.org/projects/46

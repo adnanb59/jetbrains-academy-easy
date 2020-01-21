@@ -1,7 +1,7 @@
 package coders;
 
 interface Evaluator {
-    /*
+    /**
     * Take the passed in character and do initial shift (left or right)
     * before passing result to function to complete shift
     *
@@ -17,7 +17,7 @@ public abstract class Coder implements Evaluator {
     protected final Integer ENCRYPT_CONST = 1;
     protected final Integer DECRYPT_CONST = -1;
 
-    /*
+    /**
     * After initial shift occurs, take result and calculate final shift for character
     *
     * @param character - Unicode integer value for character after initial shift
@@ -32,7 +32,7 @@ public abstract class Coder implements Evaluator {
         return (char) tmp;
     }
 
-    /*
+    /**
     * Take original text and amount to shift as well as direction (specified by multiplier)
     * then go through text, modify the characters and return the result
     *
@@ -51,7 +51,7 @@ public abstract class Coder implements Evaluator {
         return sb.toString();
     }
 
-    /*
+    /**
     * Take initial text and amount to shift characters, then encrypt the text and return result
     *
     * @param ciphertext - Original string that will be modified
@@ -62,7 +62,7 @@ public abstract class Coder implements Evaluator {
         return action(ciphertext, shift, ENCRYPT_CONST);
     }
 
-    /*
+    /**
     * Take initial text and amount to shift characters, then decrypt the text and return result
     *
     * @param ciphertext - Original string that will be modified

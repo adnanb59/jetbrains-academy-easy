@@ -6,22 +6,26 @@ public class Runner {
     public static void main(String[] args) {
         // -- INITIALIZE VARIABLES --
         Coder m = null;
-        boolean doDecrypt = false, hasError = false;
-        int shift = 0;
+        boolean hasError = false;
+        Boolean doDecrypt = null;
+        Integer shift = null;
         String data = null, inFile = null, outFile = null;
 
         // -- PARSE COMMAND LINE ARGUMENTS --
         // Go through command line arguments and update variables
         // Check every other (for checking flags specifically)
         for (int i = 0; i < args.length; i += 2) {
+            // For any valid flag, there will immediately be an error if there's no supplied value
+            // or if the variable for that flag was already set (no double dipping)
             switch(args[i]) {
                 case "-mode":
-                    // Error occurs if there is no value for the argument or the value is not enc or dec
-                    hasError = i >= args.length-1 || !("enc".equals(args[i+1]) || "dec".equals(args[i+1]));
+                    // Error occurs if the value is not enc or dec
+                    hasError = i >= args.length-1 || doDecrypt != null ||
+                               !("enc".equals(args[i+1]) || "dec".equals(args[i+1]));
                     if (!hasError) doDecrypt = "dec".equals(args[i+1]); // set decrypt flag
                     break;
                 case "-key":
-                    hasError = i >= args.length-1;
+                    hasError = i >= args.length-1 || shift != null;
                     if (!hasError) {
                         // Read input and try to convert to an integer for a valid shift (negative works too)
                         try {
@@ -32,20 +36,21 @@ public class Runner {
                     }
                     break;
                 case "-data":
-                    hasError = i >= args.length-1;
+                    hasError = i >= args.length-1 || data != null;
                     if (!hasError) data = args[i+1];
                     break;
                 case "-in":
-                    hasError = i >= args.length-1;
+                    hasError = i >= args.length-1 || inFile != null;
                     if (!hasError && data == null) inFile = args[i+1];
                     break;
                 case "-out":
-                    hasError = i >= args.length-1;
-                    if (!hasError && data == null) outFile = args[i+1];
+                    hasError = i >= args.length-1 || outFile != null;
+                    if (!hasError) outFile = args[i+1];
                     break;
                 case "-alg":
-                    // Error occurs if there is no value for the argument or the value is not enc or dec
-                    hasError = i >= args.length-1 || !("shift".equals(args[i+1]) || "unicode".equals(args[i+1]));
+                    // Error occurs if the value is not unicode or shift
+                    hasError = i >= args.length-1 || m != null ||
+                               !("shift".equals(args[i+1]) || "unicode".equals(args[i+1]));
                     if (!hasError) m = ("unicode".equals(args[i+1])) ? new Unicode() : new Shift();
                     break;
                 default:
@@ -62,6 +67,7 @@ public class Runner {
                    "[-out <String>] [-in <String>] [-alg shift|unicode]";
         } else {
             if (m == null) m = new Shift(); // if -alg not set, use shift algorithm
+            if (shift == null) shift = 0; // if -key not set, set to 0
 
             // Only use file from -in flag if no -data is provided, if both are not set then use empty string
             if (data == null && inFile != null) {
