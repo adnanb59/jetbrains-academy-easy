@@ -1,4 +1,4 @@
-##simple-chatty-bot
+## simple-chatty-bot
 
 The program simulates a "Simple Chatty Bot", which will interact with the user 
 and allow them to do a couple of actions when prompted.  
