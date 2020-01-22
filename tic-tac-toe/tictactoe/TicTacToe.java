@@ -114,7 +114,7 @@ public class TicTacToe {
         boolean isNotOccupied = this.board[r][c] == '_';
         if (isNotOccupied) {
             // Update the board and check if the game has reached a conclusion
-            this.board[r][c] = this.state == State.NOT_FINISHED_X ? 'O' : 'X';
+            this.board[r][c] = this.state == State.NOT_FINISHED_X ? 'X' : 'O';
             this.x_moves += this.board[r][c] == 'X' ? 1 : 0;
             this.o_moves += this.board[r][c] == 'O' ? 1 : 0;
             tmp = processBoard(r, c);

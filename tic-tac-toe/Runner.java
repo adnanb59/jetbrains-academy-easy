@@ -12,7 +12,7 @@ public class Runner {
         // -- PROCESS USER INPUT --
         // Play Tic-Tac-Toe
         while (!ttt.isCompleted()) {
-            ttt.printBoard();
+            System.out.println(ttt.printBoard());
             areCoordinatesValid = false; // set to false during each iteration
             // Prompt user to enter coordinates (and keep doing so until valid ones are entered)
             while (!areCoordinatesValid) {
@@ -36,6 +36,7 @@ public class Runner {
                     System.err.println("You should enter numbers!");
                 } finally {
                     in.nextLine();
+                    System.out.println();
                 }
             }
         }

@@ -26,7 +26,7 @@ public class CoffeeMachine {
     }
 
     /** Simulate coffee machine process of making a drink */
-    private void makeDrink() {
+    private synchronized void makeDrink() {
         try {
             System.out.println("\nStarting to make the drink...");
             System.out.println("Grinding coffee beans...");
@@ -39,7 +39,7 @@ public class CoffeeMachine {
             wait(10L);
             System.out.println("Pouring some milk into the cup...");
             wait(10L);
-            System.out.println("Drink is ready!\n");
+            System.out.println("Drink is ready!");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -50,7 +50,7 @@ public class CoffeeMachine {
     *
     * @param drink - Number representing drink (from prompt string)
     */
-    public void sellDrink(int drink) {
+    public synchronized void sellDrink(int drink) {
         Drink curr = drinks.get(drink-1);
         if (curr.WATER_ML > this.water_ml) {
             System.out.println("Insufficient amount of water for drink.");
@@ -75,7 +75,7 @@ public class CoffeeMachine {
     * @param beans - Amount of coffee beans (in g) to fill machine with
     * @param cups - Amount of cups to add
     */
-    public void fillCoffeeMachine(int water, int milk, int beans, int cups) {
+    public synchronized void fillCoffeeMachine(int water, int milk, int beans, int cups) {
         updateAmounts(water, milk, beans, cups);
     }
 
@@ -87,7 +87,7 @@ public class CoffeeMachine {
     * @param beans - Amount of coffee beans (in g) to fill machine with
     * @param cups - Amount of cups to add
     */
-    private void updateAmounts(int water, int milk, int beans, int cups) {
+    private synchronized void updateAmounts(int water, int milk, int beans, int cups) {
         this.water_ml += water;
         this.milk_ml += milk;
         this.coffeeBeans_g += beans;
@@ -148,7 +148,7 @@ public class CoffeeMachine {
      * */
     public String toString() {
         return String.format("\nThe coffee machine has:\n%d ml of water\n%d ml of milk\n" +
-                             "%d g of coffee beans\n%d disposable cups\n$%.2f stored\n",
+                             "%d g of coffee beans\n%d disposable cups\n$%.2f stored",
                              this.water_ml, this.milk_ml, this.coffeeBeans_g, this.cups, this.money);
     }
 

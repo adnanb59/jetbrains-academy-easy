@@ -42,11 +42,11 @@ public class SimpleChattyBot {
     *
     * @param count - Number to count to
     */
-    public void promptCountToNumber(int count) {
+    public synchronized void promptCountToNumber(int count) {
         for (int i = 0; i <= count; i++) {
             try {
                 System.out.println(i + "!");
-                wait(10L);
+                wait(100L);
             } catch (InterruptedException e) {
                 System.out.println(e.getMessage());
             }

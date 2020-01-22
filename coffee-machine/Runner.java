@@ -14,7 +14,7 @@ public class Runner {
         boolean isDrinkInvalid = true;
 
         while (isDrinkInvalid) {
-            String preamble = option.equals("buy") ? "What do you want to buy? " : "What drink do you want to make?";
+            String preamble = option.equals("buy") ? "What do you want to buy? " : "What drink do you want to make? ";
             System.out.print(preamble + c.getPrompt() + ": ");
             try {
                 // Prompt user for drink
