@@ -47,6 +47,6 @@ The user can specify an input file (to import card collection from) using the fl
 well as specifying the output file (to export card collection to) using the flag **-export**.
 
 After compiling the files, you can run program with:  
-`java Runner [-in <filename>] [-out <filename>]`  
+`java Runner [-import <filename>] [-export <filename>]`  
 
 ##### URL: https://hyperskill.org/projects/44

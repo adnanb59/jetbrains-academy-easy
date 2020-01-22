@@ -18,6 +18,7 @@ class Drink {
     }
 }
 
+/** Static factory to make drinks based on drink name */
 class DrinkFactory {
     public static Drink makeDrink(String drink) {
         Drink ret;

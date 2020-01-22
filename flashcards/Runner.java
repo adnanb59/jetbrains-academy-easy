@@ -46,6 +46,7 @@ public class Runner {
         if (importFile != null) action.append(fc.importCards(importFile));
 
         // -- PROCESS USER INPUT --
+        // Run user prompt cycle
         while (!exit) {
             System.out.println(MENU_PROMPT);
             action.append(MENU_PROMPT + "\n");

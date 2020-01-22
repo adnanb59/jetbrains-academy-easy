@@ -1,16 +1,9 @@
 package tictactoe;
 
 import java.util.Arrays;
-import java.util.InputMismatchException;
-import java.util.Scanner;
 
-// State of Tic-Tac-Toe game
+/** State of Tic-Tac-Toe game */
 enum State {
-    READY, READING, PROCESSING, PROCESSED
-}
-
-// Result of Tic-Tac-Toe game after a move
-enum ProcessedState {
     DRAW("Draw"),
     NOT_FINISHED_X("Game not finished"),
     NOT_FINISHED_O("Game not finished"),
@@ -19,10 +12,16 @@ enum ProcessedState {
     IMPOSSIBLE("Impossible");
 
     private final String statement;
-    ProcessedState(String st) {
+
+    /** Constructor for State Enum */
+    State(String st) {
         this.statement = st;
     }
 
+    /**
+    * String representation of State Enum
+    * @return statement associated with given state
+    */
     @Override
     public String toString() {
         return this.statement;
@@ -31,34 +30,35 @@ enum ProcessedState {
 
 public class TicTacToe {
     private State state;
-    private ProcessedState pState;
     private char[][] board;
-    private int x, o;
-    private char last;
-    Scanner in;
-    
+    private int x_moves, o_moves;
+
+    /** TicTacToe constructor */
     public TicTacToe() {
-        this.in = new Scanner(System.in);
         this.board = new char[3][3];
         cleanBoard();
     }
 
-    // Initialize board and variables to be ready for a new game
+    /** Initialize variables of class symbolizing a new game. */
     private void cleanBoard() {
-        this.state = State.READY;
-        this.x = 0;
-        this.o = 0;
-        this.last = 'O';
+        this.state = State.NOT_FINISHED_X;
+        this.x_moves = 0;
+        this.o_moves = 0;
         for (char[] row : this.board) {
             Arrays.fill(row, '_');
         }
     }
 
-    // Check that the move placed has lead to winning scenarios (and count them)
-    // First check vertically, then horizontally,
-    // then diagonally (if it applies - last move was along either diagonal)
+    /**
+    * Check that the move placed has lead to winning scenarios (and count them)
+    * First check vertically, then horizontally,
+    * then diagonally (if it applies - last move was along either diagonal).
+    *
+    * @param r - Specific row in grid
+    * @param c - Specific column in grid
+    * @return Number of winning positions that exists from specific position in grid
+    */
     private int processBoard(int r, int c) {
-        this.state = State.PROCESSING;
         int t = 0;
         if (this.board[r][c] != '_') {
             t += (this.board[0][c] == this.board[1][c] && this.board[1][c] == this.board[2][c]) ? 1 : 0;
@@ -71,81 +71,64 @@ public class TicTacToe {
         return t;
     }
 
-    // After a move has been processed, update the state of
-    // the game to see if it has reached a conclusion
-    // `xW` & `oW` represent X and O wins
+    /**
+    * After a move has been processed, update the state of the game to see if it has reached a conclusion.
+    *
+    * @param xW - number of wins X gets from last move
+    * @param oW - number of wins O gets from last move
+    */
     private void updateState(int xW, int oW) {
-        this.state = State.PROCESSED;
-        if (Math.abs(this.x - this.o) > 1 || (xW > 0 && oW > 0)) {
-            this.pState = ProcessedState.IMPOSSIBLE;
-        } else if (xW == 0 && oW == 0 && this.x + this.o == 9) {
-            this.pState = ProcessedState.DRAW;
+        if (Math.abs(this.x_moves - this.o_moves) > 1 || (xW > 0 && oW > 0)) {
+            this.state = State.IMPOSSIBLE;
+        } else if (xW == 0 && oW == 0 && this.x_moves + this.o_moves == 9) {
+            this.state = State.DRAW;
         } else if (xW == 1) {
-            this.pState = ProcessedState.X_WINS;
+            this.state = State.X_WINS;
         } else if (oW == 1) {
-            this.pState = ProcessedState.O_WINS;
+            this.state = State.O_WINS;
         } else {
-            this.pState = this.last == 'X' ? ProcessedState.NOT_FINISHED_X : ProcessedState.NOT_FINISHED_O;
-            this.state = State.READY;
+            this.state = this.state == State.NOT_FINISHED_X ? State.NOT_FINISHED_O : State.NOT_FINISHED_X;
         }
     }
 
-    // Prompt user to make a move on the board, then process it and update the state of the game
-    private void makeMove() {
-        int userX = -1, userY = -1;
-        boolean success = false;
-        this.state = State.READING;
-
-        // Loop until user has entered valid input
-        while (!success) {
-            System.out.print("(" + (this.last == 'X' ? 'O' : 'X') + ") Enter the coordinates: ");
-            /**
-             * MOVE SET:
-             * (1,3) (2,3) (3,3)
-             * (1,2) (2,2) (2,3)
-             * (1,1) (2,1) (3,1) 
-             */
-            try {
-                userX = in.nextInt();
-                userY = in.nextInt();
-                if (userX > 3 || userY > 3 || userX < 1 || userX < 1) {
-                    System.err.println("Coordinates should be from 1 to 3!");
-                } else if (this.board[2-(userY-1)][userX-1] == '_') { // User found unoccupied space
-                    success = true;
-                } else {
-                    System.err.println("This cell is occupied! Choose another one!");
-                }
-            } catch (InputMismatchException e) { // User tried to enter something other than a number
-                System.err.println("You should enter numbers!");
-                in.nextLine();
-            }
-        }
-
-        // Update the board and check if the game has reached a conclusion
-        this.board[2-(userY-1)][userX-1] = this.last == 'X' ? 'O' : 'X';
-        this.last = this.board[2-(userY-1)][userX-1];
-        x += this.last == 'X' ? 1 : 0;
-        o += this.last == 'O' ? 1 : 0;
-        int xWins = this.last == 'X' ? processBoard(2-(userY-1), userX-1) : 0;
-        int oWins = this.last == 'O' ? processBoard(2-(userY-1), userX-1) : 0;
-        updateState(xWins, oWins);
+    /**
+    * Provide the user the next character to move.
+    *
+    * @return The character representing the next character to move
+    */
+    public Character getNextMover() {
+        return this.state == State.NOT_FINISHED_X ? 'X' : 'O';
     }
 
-    // Entry point for user to play game
-	public void play() {
-        if (this.state != State.READY) cleanBoard(); // Clean board if already used
-        // Loop until state is PROCESSED & the processed state is WIN, DRAW or IMPOSSIBLE
-        // This means the moves have been processed and it has reached a conclusive state
-        while (this.state != State.PROCESSED && (this.pState != ProcessedState.NOT_FINISHED_O || this.pState != ProcessedState.NOT_FINISHED_X)) {
-            System.out.println(printBoard(false));
-            makeMove();
+    /**
+    * Take coordinates from user and make move, process it and update the state of the game.
+    *
+    * @param r - User inputted row in the grid
+    * @param c - User inputted column in the grid
+    * @return Whether or not the specified position in the grid is already occupied
+    */
+    public boolean makeMove(int r, int c) {
+        int tmp = r;
+        r = 2-(c-1);
+        c = tmp-1;
+        boolean isNotOccupied = this.board[r][c] == '_';
+        if (isNotOccupied) {
+            // Update the board and check if the game has reached a conclusion
+            this.board[r][c] = this.state == State.NOT_FINISHED_X ? 'O' : 'X';
+            this.x_moves += this.board[r][c] == 'X' ? 1 : 0;
+            this.o_moves += this.board[r][c] == 'O' ? 1 : 0;
+            tmp = processBoard(r, c);
+            updateState(this.board[r][c] == 'X' ? tmp : 0, this.board[r][c] == 'O' ? tmp : 0);
         }
-        System.out.println(printBoard(true));
+        return isNotOccupied;
     }
     
-    // Return string representation of the Tic-Tac-Toe board
-    // `state`: indicator to print state of game (state printed at end)
-    private String printBoard(boolean state) {
+    /**
+    * Provide the current Tic-Tac-Toe board to the user.
+    *
+    * @return String representation of the board
+    */
+    public String printBoard() {
         StringBuilder s = new StringBuilder();
         s.append("---------\n");
         for (int i = 0; i < 3; i++) {
@@ -160,7 +143,24 @@ public class TicTacToe {
             }
         }
         s.append("---------");
-        if (state) s.append("\n" + this.pState);
         return s.toString();
+    }
+
+    /**
+    * Provide the current state of the game to the user (in a friendlier representation).
+    *
+    * @return The string representation of the current state
+    */
+    public String getState() {
+        return this.state.toString();
+    }
+
+    /**
+    * Check whether the game has been completed.
+    *
+    * @return The result of the current state of the game equalling one of the completed states
+    */
+    public boolean isCompleted() {
+        return !(this.state == State.NOT_FINISHED_X || this.state == State.NOT_FINISHED_O);
     }
 }
