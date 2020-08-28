@@ -7,7 +7,5 @@ Apparently, these are all of easy difficulty (for people who are just starting -
 These include:
 
 - **Coffee Machine:** Simulate a real-world coffee machine
-- **Encryption-Decryption:** encrypt and decrypt texts and messages using algorithms
-- **Flashcards:** Program to memorize data using flashcards
 - **Tic-Tac-Toe:** The game
 - **Simple Chatty Bot:** Simple bot
