@@ -5,11 +5,15 @@ Each guess is graded by a score of bulls and cows. The game continues for as man
 
 ### Code Creation
 
+TODO: how is the code created algo-wise and why
+
 ### Grading
 
 - A bull is given when there exists a position where the guess and the code have the same character.
 - A cow is given when there exists a character in the guess that exists in the code but at a different position.
 - If a user gets no cows or bulls, the Grade will be `None`.
+
+TODO: how is the guess graded (algo-wise) and why
 
 #### Running Program
 After compiling program with `javac src/Runner.java`, run program with `java src/Runner`.
