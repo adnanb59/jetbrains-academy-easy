@@ -42,11 +42,11 @@ public class Runner {
      * @return Grade of user guess against code (in bulls and cows)
      */
     private static Map<String, Integer> grade(String c, String g) {
-        Map<Character, Integer> visited = new HashMap<>();
-        // Add characters of code to map to compare guess to later
+        Set<Character> visited = new HashSet<>();
+        // Add characters of code to set to compare guess to later
         // Helps when the guess has characters that show up later in the code
         for (int i = 0; i < c.length(); i++) {
-            visited.put(c.charAt(i), visited.containsKey(c.charAt(i)) ? visited.get(c.charAt(i))+1 : 1);
+            visited.add(c.charAt(i));
         }
 
         int cows = 0, bulls = 0;
@@ -55,12 +55,10 @@ public class Runner {
         // - if they match with the code at some other point => cow
         for (int i = 0; i < c.length(); i++) {
             if (c.charAt(i) == g.charAt(i)) bulls++;
-            else if (visited.containsKey(g.charAt(i))) {
+            else if (visited.contains(g.charAt(i))) {
                 cows++;
-                // Update occurrences map to reflect character in guess being accounted for
-                int count = visited.get(g.charAt(i))-1;
-                if (count == 0) visited.remove(g.charAt(i));
-                else visited.put(g.charAt(i), count);
+                // Remove character as it's been accounted for
+                visited.remove(g.charAt(i));
             }
         }
         return Map.of("bulls", bulls, "cows", cows);
