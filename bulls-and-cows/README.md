@@ -7,7 +7,7 @@ Each guess is graded by a score of bulls and cows. The game continues for as man
 
 The method to create the code takes in it's length and the number of possible symbols. There is an assumption made in my algorithm, that is all the numbers are available in all cases. Meaning that, let's say the number of symbols is less than 10 (digits 0-9), there is no cut-off to the numbers available (e.g. `symbols=4`, the possible symbols aren't only 0-3 but all the numbers. This contrasts with the use of letters, where letters are cut off based on the number of symbols available (e.g. `symbosl=36, available={0-9, a-z}` and `symbols=13, available={0-9, a-c}`.
 
-With this in mind, while building the code a number is generated randomly (between 0 and `symbols`). Assuming the number hasn't been used yet then an ASCII value is calculated. If the number correpsonds to a numeral character (between 0-9) then a numeral character is used. Likewise, if it corresponds to a letter then a letter is calculated. The numbers used are stored in a set, so they can be compared against when generating new numbers.
+With this in mind, while building the code a number is generated randomly (between 0 and `symbols`). Assuming the number hasn't been used yet then an ASCII value is calculated. If the number corresponds to a numeral character (between 0-9) then a numeral character is used. Likewise, if it corresponds to a letter then a letter is calculated. The numbers used are stored in a set, so they can be compared against when generating new numbers.
 
 ### Grading
 
