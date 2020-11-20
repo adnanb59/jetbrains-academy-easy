@@ -5,7 +5,9 @@ Each guess is graded by a score of bulls and cows. The game continues for as man
 
 ### Code Creation
 
-TODO: how is the code created algo-wise and why
+The method to create the code takes in it's length and the number of possible symbols. There is an assumption made in my algorithm, that is all the numbers are available in all cases. Meaning that, let's say the number of symbols is less than 10 (digits 0-9), there is no cut-off to the numbers available (e.g. `symbols=4`, the possible symbols aren't only 0-3 but all the numbers. This contrasts with the use of letters, where letters are cut off based on the number of symbols available (e.g. `symbosl=36, available={0-9, a-z}` and `symbols=13, available={0-9, a-c}`.
+
+With this in mind, while building the code a number is generated randomly (between 0 and `symbols`). Assuming the number hasn't been used yet then an ASCII value is calculated. If the number correpsonds to a numeral character (between 0-9) then a numeral character is used. Likewise, if it corresponds to a letter then a letter is calculated. The numbers used are stored in a set, so they can be compared against when generating new numbers.
 
 ### Grading
 
@@ -13,7 +15,9 @@ TODO: how is the code created algo-wise and why
 - A cow is given when there exists a character in the guess that exists in the code but at a different position.
 - If a user gets no cows or bulls, the Grade will be `None`.
 
-TODO: how is the guess graded (algo-wise) and why
+To calculate the grade, characters of the code are placed in a set which will be used to compare characters of the guess later. Because the code contains unique characters, the set works well to accurately describe the code, if the code contained non-unique characters, a map would be the right data structure to use. Afterwards, each character of the guess is traversed over and checked, first against the code's character at that position (for a bull) or at any other position (using the set - for a cow). Scores are tallied anf returned.
+
+The use of a set is crucial because it allows for a faster lookup of characters (in the case of a cow), with the set's O(1) lookup vs. the O(n) search if you were to check the entire code. Additionally, it covers the case where if you were looking at each position with no info on future characters, you wouldn't know if the character is potentially a bull. Yoo could alleviate this by using data structures for both guess and code's characters (keeping track of visited). However, in that case it would be better (space-wise & time-wise) to use the method that is being used currently.
 
 #### Running Program
 After compiling program with `javac src/Runner.java`, run program with `java src/Runner`.
